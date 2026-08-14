@@ -1,0 +1,104 @@
+name: Build and Push Webspaces to Docker Hub
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      target_env:
+        description: "Choose the target environment:"
+        required: true
+        default: 'production'
+        type: choice
+        options:
+          - development
+          - production
+
+concurrency:
+  group: deploy-webspaces-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.target_env || 'production' }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v4
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+
+      - name: Build and push webspaces image
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          build-args: |
+            VITE_BACKEND_BASE_URL=${{ vars.BACKEND_BASE_URL }}
+            VITE_TURNSTILE_SITE_KEY_PUBLIC=${{ vars.VITE_TURNSTILE_SITE_KEY_PUBLIC }}
+          tags: lastcallsoftware/webspaces:latest,lastcallsoftware/webspaces:${{ github.sha }}
+          cache-from: type=registry,ref=lastcallsoftware/webspaces:buildcache
+          cache-to: type=registry,ref=lastcallsoftware/webspaces:buildcache,mode=max
+
+      - name: Ensure target directory exists on server
+        uses: appleboy/ssh-action@master
+        env:
+          APP_SERVER_PASSWORD: ${{ secrets.APP_SERVER_PASSWORD }}
+        with:
+          host: ${{ secrets.APP_SERVER_HOST }}
+          username: ${{ secrets.APP_SERVER_USERNAME }}
+          key: ${{ secrets.APP_SERVER_SSH_KEY }}
+          envs: APP_SERVER_PASSWORD
+          script: |
+            set -euo pipefail
+            TARGET_DIR="/srv/webspaces"
+            if [ -d "$TARGET_DIR" ]; then echo "✓ $TARGET_DIR exists" && exit 0; fi
+            echo "${APP_SERVER_PASSWORD:-}" | sudo -S mkdir -p "$TARGET_DIR"
+            echo "${APP_SERVER_PASSWORD:-}" | sudo -S chown "$USER:$USER" "$TARGET_DIR" || true
+            echo "✓ Created $TARGET_DIR" && exit 0
+
+      - name: Copy deployment files to app server
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.APP_SERVER_HOST }}
+          username: ${{ secrets.APP_SERVER_USERNAME }}
+          key: ${{ secrets.APP_SERVER_SSH_KEY }}
+          source: "docker-compose.yml"
+          target: /srv/webspaces/
+          strip_components: 0
+
+      - name: Deploy to app server via SSH
+        uses: appleboy/ssh-action@master
+        env:
+          APP_SERVER_PASSWORD: ${{ secrets.APP_SERVER_PASSWORD }}
+          VITE_BACKEND_BASE_URL: ${{ vars.BACKEND_BASE_URL }}
+          VITE_TURNSTILE_SITE_KEY_PUBLIC: ${{ vars.VITE_TURNSTILE_SITE_KEY_PUBLIC }}
+        with:
+          host: ${{ secrets.APP_SERVER_HOST }}
+          username: ${{ secrets.APP_SERVER_USERNAME }}
+          key: ${{ secrets.APP_SERVER_SSH_KEY }}
+          envs: >-
+            APP_SERVER_PASSWORD,
+            VITE_BACKEND_BASE_URL,
+            VITE_TURNSTILE_SITE_KEY_PUBLIC
+          script: |
+            set -euo pipefail
+            DEPLOY_DIR=/srv/webspaces
+            echo "Deploying webspaces from $DEPLOY_DIR"
+            cd "$DEPLOY_DIR" || { echo "ERROR: $DEPLOY_DIR not found"; exit 2; }
+            
+            # Pull and restart the nginx service
+            docker compose pull nginx
+            docker compose up -d nginx
+            
+            echo "✓ Webspaces deployment complete"

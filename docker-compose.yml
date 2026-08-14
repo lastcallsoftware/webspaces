@@ -1,0 +1,49 @@
+services:
+  nginx:
+    container_name: webspaces-nginx
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        VITE_BACKEND_BASE_URL: ${VITE_BACKEND_BASE_URL:?}
+        VITE_TURNSTILE_SITE_KEY_PUBLIC: ${VITE_TURNSTILE_SITE_KEY_PUBLIC:?}
+    # In production, pull the built image from Docker Hub instead:
+    # image: lastcallsoftware/webspaces:latest
+    # pull_policy: always
+    
+    ports:
+      - "80:8080"
+      - "443:8443"
+    
+    environment:
+      - NODE_ENV=production
+    
+    volumes:
+      # Persist Let's Encrypt certificates across container restarts
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+      - /var/www/certbot:/var/www/certbot
+    
+    restart: on-failure
+    
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+    
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    
+    # Connect to the trackeats network (must be created by trackeats docker-compose.yml first)
+    networks:
+      - trackeats-net
+
+networks:
+  # External network created by trackeats docker-compose.yml
+  trackeats-net:
+    external: true
+    name: trackeats-net
