@@ -35,7 +35,6 @@ services:
       - trackeats-net
 
 networks:
-  # External network created by trackeats docker-compose.yml
   trackeats-net:
-    external: true
     name: trackeats-net
+    driver: bridge
