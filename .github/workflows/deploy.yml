@@ -37,6 +37,23 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
 
+      - name: Install doctl (the DigitalOcean CLI)
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+
+      - name: Get IP address of GH Actions task runner
+        id: ip
+        run: echo "ip=$(curl -4 -fsS https://api.ipify.org)" >> "$GITHUB_OUTPUT"
+
+      - name: Allow runner IP address through firewall
+        run: |
+          doctl compute firewall add-rules \
+            "${{ secrets.DIGITALOCEAN_FIREWALL_ID }}" \
+            --inbound-rules "protocol:tcp,ports:22,address:${{ steps.ip.outputs.ip }}/32"
+          # Allow the cloud firewall time to propagate before opening SSH.
+          sleep 15
+
       - name: Build and push webspaces image
         uses: docker/build-push-action@v7
         with:
@@ -94,3 +111,10 @@ jobs:
             
             chmod +x ./deploy.sh
             bash ./deploy.sh
+
+      - name: Remove runner IP from firewall
+        if: always() && steps.ip.outputs.ip != ''
+        run: |
+          doctl compute firewall remove-rules \
+            "${{ secrets.DIGITALOCEAN_FIREWALL_ID }}" \
+            --inbound-rules "protocol:tcp,ports:22,address:${{ steps.ip.outputs.ip }}/32"
