@@ -73,7 +73,7 @@ jobs:
           host: ${{ secrets.APP_SERVER_HOST }}
           username: ${{ secrets.APP_SERVER_USERNAME }}
           key: ${{ secrets.APP_SERVER_SSH_KEY }}
-          source: "docker-compose.yml"
+          source: "deploy.sh,docker-compose.yml"
           target: /srv/webspaces/
           strip_components: 0
 
@@ -81,24 +81,16 @@ jobs:
         uses: appleboy/ssh-action@master
         env:
           APP_SERVER_PASSWORD: ${{ secrets.APP_SERVER_PASSWORD }}
-          VITE_BACKEND_BASE_URL: ${{ vars.BACKEND_BASE_URL }}
-          VITE_TURNSTILE_SITE_KEY_PUBLIC: ${{ vars.VITE_TURNSTILE_SITE_KEY_PUBLIC }}
         with:
           host: ${{ secrets.APP_SERVER_HOST }}
           username: ${{ secrets.APP_SERVER_USERNAME }}
           key: ${{ secrets.APP_SERVER_SSH_KEY }}
-          envs: >-
-            APP_SERVER_PASSWORD,
-            VITE_BACKEND_BASE_URL,
-            VITE_TURNSTILE_SITE_KEY_PUBLIC
+          envs: APP_SERVER_PASSWORD
           script: |
             set -euo pipefail
             DEPLOY_DIR=/srv/webspaces
             echo "Deploying webspaces from $DEPLOY_DIR"
             cd "$DEPLOY_DIR" || { echo "ERROR: $DEPLOY_DIR not found"; exit 2; }
             
-            # Pull and restart the nginx service
-            docker compose pull nginx
-            docker compose up -d nginx
-            
-            echo "✓ Webspaces deployment complete"
+            chmod +x ./deploy.sh
+            bash ./deploy.sh
