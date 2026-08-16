@@ -9,15 +9,26 @@ if [ -z "${APP_SERVER_PASSWORD:-}" ]; then
   exit 1
 fi
 
+if [ -z "${HTPASSWD_USERNAME:-}" ] || [ -z "${HTPASSWD_PASSWORD:-}" ]; then
+    echo "✗ HTPASSWD_USERNAME and HTPASSWD_PASSWORD must be set"
+    exit 1
+fi
+
+# Install apache2-utils if not already installed and create the .htpasswd file for basic HTTP authentication.
+# This is used to restrict access to certain webpages, like the app metrics.
+which htpasswd >/dev/null || (sudo apt-get update && sudo apt-get install -y apache2-utils)
+echo "$APP_SERVER_PASSWORD" | sudo -S mkdir -p /srv/trackeats
+echo "$APP_SERVER_PASSWORD" | sudo -S htpasswd -cbB /srv/trackeats/.htpasswd "$HTPASSWD_USERNAME" "$HTPASSWD_PASSWORD"
+
 # The external network is created by the TrackEats compose stack.
 if ! docker network inspect trackeats-net >/dev/null 2>&1; then
   echo "✗ trackeats-net does not exist; deploy TrackEats before webspaces"
   exit 1
 fi
 
-# Pull the already-built webspaces image.
+# Pull the webspaces and monitoring images.
 echo "Pulling latest webspaces image from Docker Hub..."
-docker compose pull nginx
+docker compose pull
 
 # Bootstrap certificates on a fresh server. nginx needs a certificate to start,
 # while certbot needs nginx serving the ACME challenge, so start once with a
@@ -67,8 +78,8 @@ else
     echo "✓ Certificates already present"
 fi
 
-# Ensure the latest image is running after certificate setup.
-docker compose up -d --no-build nginx
+# Ensure all services are running after certificate setup.
+docker compose up -d --no-build
 
 # Install renewal if it is not already present.
 CRON_JOB="0 3 * * * docker run --rm -v /etc/letsencrypt:/etc/letsencrypt -v /var/www/certbot:/var/www/certbot certbot/certbot renew --quiet && docker exec webspaces-nginx nginx -s reload"
