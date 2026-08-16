@@ -14,8 +14,6 @@ services:
       # Persist Let's Encrypt certificates across container restarts
       - /etc/letsencrypt:/etc/letsencrypt:ro
       - /var/www/certbot:/var/www/certbot
-      # Mount the .htpasswd file for basic HTTP authentication
-      - /srv/trackeats/.htpasswd:/etc/nginx/.htpasswd:ro
 
     restart: on-failure
     
