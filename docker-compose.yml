@@ -76,8 +76,6 @@ services:
     volumes:
       - grafana_data:/var/lib/grafana
       - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources:ro
-    ports:
-      - "127.0.0.1:3000:3000"
     depends_on:
       - prometheus
     networks:
