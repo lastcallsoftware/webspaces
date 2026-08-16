@@ -16,7 +16,10 @@ fi
 
 # Install apache2-utils if not already installed and create the .htpasswd file for basic HTTP authentication.
 # This is used to restrict access to certain webpages, like the app metrics.
-which htpasswd >/dev/null || (sudo apt-get update && sudo apt-get install -y apache2-utils)
+if ! command -v htpasswd >/dev/null 2>&1; then
+    echo "$APP_SERVER_PASSWORD" | sudo -S apt-get update
+    echo "$APP_SERVER_PASSWORD" | sudo -S apt-get install -y apache2-utils
+fi
 echo "$APP_SERVER_PASSWORD" | sudo -S mkdir -p /srv/trackeats
 echo "$APP_SERVER_PASSWORD" | sudo -S htpasswd -cbB /srv/trackeats/.htpasswd "$HTPASSWD_USERNAME" "$HTPASSWD_PASSWORD"
 
