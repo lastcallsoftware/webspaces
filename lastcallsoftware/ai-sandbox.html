@@ -1,0 +1,184 @@
+e<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The AI Sandbox — Last Call Software</title>
+<meta name="description" content="The AI Sandbox: a periodic live webinar that explains AI in plain language. Browse every episode, watch the recordings, and grab the resources mentioned in each session.">
+
+<link href="assets/img/lcs-icon-32x32.png" rel="icon">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+
+<link href="assets/css/main.css" rel="stylesheet">
+<link href="assets/css/ai-sandbox.css" rel="stylesheet">
+</head>
+<body id="top">
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="site-header" id="header">
+  <div class="header-inner">
+    <a href="index.html" class="brand">
+      <span class="bell-mark" aria-hidden="true">
+        <img src="assets/img/lcs-icon-32x32.png" alt="" class="bell-svg">
+      </span>
+      <span class="brand-word">
+        <span class="brand-name">Last Call<br>Software</span>
+      </span>
+    </a>
+
+    <nav class="site-nav" id="site-nav">
+      <ul>
+        <li><a href="index.html#services">Services</a></li>
+        <li><a href="ai-sandbox.html">The AI Sandbox</a></li>
+        <li><a href="index.html#about">About</a></li>
+        <li><a href="index.html#contact">Contact</a></li>
+      </ul>
+    </nav>
+
+    <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="site-nav">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- Sandbox page hero -->
+  <section class="sandbox-page-hero">
+    <div class="section-inner sandbox-hero-inner">
+      <div class="sandbox-hero-copy">
+        <p class="eyebrow">Flagship project</p>
+        <h1 class="sandbox-page-title">The AI Sandbox</h1>
+        <p class="sandbox-page-sub">
+          A periodic, live webinar that explains AI in plain language — built for a
+          curious, non-technical audience. Every episode is logged here with the
+          recording and a list of resources mentioned during the session.
+        </p>
+        <p class="sandbox-page-note">
+          No episodes have aired yet — these are placeholders that will be filled in
+          as the series gets underway.
+        </p>
+      </div>
+      <div class="sandbox-hero-image">
+        <img src="assets/img/AI Sandbox 2.png" alt="A robot playing in a sandbox" class="sandbox-robot-img">
+      </div>
+    </div>
+  </section>
+
+  <!-- Episode feed -->
+  <section class="section episode-feed-section" id="episodes">
+    <div class="section-inner">
+      <h2 class="section-title">Episodes</h2>
+      <p class="feed-lede">Scroll to browse the archive. New sessions appear here as they air.</p>
+
+      <!-- Episode nav shortcuts -->
+      <nav class="episode-jump" id="episode-jump" aria-label="Jump to an episode">
+        <span class="episode-jump-label">Jump to:</span>
+        <ul class="episode-jump-list" id="episode-jump-list">
+          <!-- Populated by ai-sandbox.js -->
+        </ul>
+      </nav>
+
+      <div class="episode-feed" id="episode-feed">
+        <!-- Episodes are injected by ai-sandbox.js -->
+      </div>
+
+      <div class="feed-status" id="feed-status" role="status" aria-live="polite">
+        <span class="feed-spinner" aria-hidden="true"></span>
+        <span class="feed-status-text">Loading episodes…</span>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <span class="bell-mark small" aria-hidden="true">
+      <img src="assets/img/lcs-icon-32x32.png" alt="" class="bell-svg">
+    </span>
+    <p>© <span id="year"></span> Last Call Software. All rights reserved.</p>
+  </div>
+</footer>
+
+<script>
+  window.AI_SANDBOX_EPISODES = [
+    {
+      id: "episode-01",
+      number: "01",
+      title: "Why Should We Care?",
+      description: "It seems like AI is in the news every day, and every company and product mentions it. " +
+        "But how does it affect you?  If you don't use AI in your daily life, why should you care about it? " +
+        "This episode discusses why AI matters to the average person, both in the big picture and " +
+        "on a more personal level.",
+      youtubeUrl: "#",
+      youtubeId: "",
+      resources: [
+        { label: "App demoed during the session", url: "#" },
+        { label: "Research article we referenced", url: "#" },
+        { label: "Slide deck / notes", url: "#" }
+      ]
+    },
+    {
+      id: "episode-02",
+      number: "02",
+      title: "Episode 02 — Coming Soon",
+      description: "This episode hasn't aired yet. Once it does, you'll find a short summary of what we covered right here, along with the full recording and every resource mentioned during the session.",
+      youtubeUrl: "#",
+      youtubeId: "",
+      resources: [
+        { label: "App demoed during the session", url: "#" },
+        { label: "Research article we referenced", url: "#" },
+        { label: "Slide deck / notes", url: "#" }
+      ]
+    },
+    {
+      id: "episode-03",
+      number: "03",
+      title: "Episode 03 — Coming Soon",
+      description: "This episode hasn't aired yet. Once it does, you'll find a short summary of what we covered right here, along with the full recording and every resource mentioned during the session.",
+      youtubeUrl: "#",
+      youtubeId: "",
+      resources: [
+        { label: "App demoed during the session", url: "#" },
+        { label: "Research article we referenced", url: "#" },
+        { label: "Slide deck / notes", url: "#" }
+      ]
+    },
+    {
+      id: "episode-04",
+      number: "04",
+      title: "Episode 04 — Coming Soon",
+      description: "This episode hasn't aired yet. Once it does, you'll find a short summary of what we covered right here, along with the full recording and every resource mentioned during the session.",
+      youtubeUrl: "#",
+      youtubeId: "",
+      resources: [
+        { label: "App demoed during the session", url: "#" },
+        { label: "Research article we referenced", url: "#" },
+        { label: "Slide deck / notes", url: "#" }
+      ]
+    },
+    {
+      id: "episode-05",
+      number: "05",
+      title: "Episode 05 — Coming Soon",
+      description: "This episode hasn't aired yet. Once it does, you'll find a short summary of what we covered right here, along with the full recording and every resource mentioned during the session.",
+      youtubeUrl: "#",
+      youtubeId: "",
+      resources: [
+        { label: "App demoed during the session", url: "#" },
+        { label: "Research article we referenced", url: "#" },
+        { label: "Slide deck / notes", url: "#" }
+      ]
+    }
+  ];
+</script>
+
+<script src="assets/js/main.js"></script>
+<script src="assets/js/ai-sandbox.js"></script>
+</body>
+</html>
