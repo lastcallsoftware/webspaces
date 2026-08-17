@@ -79,8 +79,8 @@ a { color: var(--color-blue-deep); text-decoration: none; }
   padding: 0 24px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 24px;
+  justify-content: center;
+  gap: 32px;
 }
 
 .brand {
@@ -122,6 +122,10 @@ a { color: var(--color-blue-deep); text-decoration: none; }
   font-size: 1.05rem;
   line-height: 1.15;
   color: var(--color-ink);
+}
+
+.site-nav {
+  margin-left: 48px;
 }
 
 .site-nav ul {
@@ -198,6 +202,13 @@ a { color: var(--color-blue-deep); text-decoration: none; }
   color: var(--color-ink);
 }
 .btn-ghost:hover { border-color: var(--color-ink); }
+
+.btn-brass {
+  background: var(--color-brass);
+  color: var(--color-ink);
+  box-shadow: var(--shadow-sm);
+}
+.btn-brass:hover { background: var(--color-brass-deep); box-shadow: var(--shadow-md); }
 
 /* ==========================================================================
    Hero
@@ -318,6 +329,10 @@ a { color: var(--color-blue-deep); text-decoration: none; }
 }
 
 .sandbox-lede { font-size: 1.05rem; }
+
+.sandbox-cta {
+  margin-top: 1.4em !important;
+}
 
 .sandbox-facts {
   list-style: none;
