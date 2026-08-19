@@ -283,7 +283,9 @@ a { color: var(--color-blue-deep); text-decoration: none; }
 /* ==========================================================================
    Services
    ========================================================================== */
+#services { text-align: center; }
 .service-grid {
+  text-align: left;
   margin-top: 2.2em;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -420,8 +422,27 @@ a { color: var(--color-blue-deep); text-decoration: none; }
 }
 
 /* ==========================================================================
+   The AI Sandbox (featured on homepage)
+   ========================================================================== */
+.section-sandbox-feat {
+  background: var(--color-ink);
+  text-align: center;
+}
+.section-sandbox-feat .eyebrow { color: var(--color-brass); }
+.section-sandbox-feat .section-title { color: var(--color-white); }
+.section-sandbox-feat p { color: rgba(255,255,255,0.72); }
+.section-sandbox-feat .btn { margin-top: 0.6em; }
+.sandbox-lead {
+  max-width: 640px;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 1.02rem;
+}
+
+/* ==========================================================================
    About
    ========================================================================== */
+#about { text-align: center; }
 .about-inner { max-width: 720px; }
 .about-text { font-size: 1.02rem; }
 .text-link {
@@ -433,11 +454,13 @@ a { color: var(--color-blue-deep); text-decoration: none; }
 /* ==========================================================================
    Contact
    ========================================================================== */
+#contact { text-align: center; }
 .section-contact { background: var(--color-bg-alt); }
-.contact-sub { max-width: 520px; margin-bottom: 2em; }
+.contact-sub { max-width: 520px; margin-bottom: 2em; margin-left: auto; margin-right: auto; }
 
 .contact-form {
   max-width: 640px;
+  margin: 0 auto;
   display: grid;
   gap: 1.3em;
 }
@@ -480,7 +503,7 @@ a { color: var(--color-blue-deep); text-decoration: none; }
 .form-status .error-message { background: #FBE3E3; color: #A23636; }
 .form-status .sent-message { background: #DFF3E6; color: #2E7D4F; }
 
-.contact-form button { justify-self: start; }
+.contact-form button { justify-self: center; }
 
 /* ==========================================================================
    Footer
