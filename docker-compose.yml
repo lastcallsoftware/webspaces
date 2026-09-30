@@ -1,8 +1,13 @@
 services:
   nginx:
     container_name: webspaces-nginx
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        BUILD_VERSION: ${BUILD_VERSION:-dev}
     image: lastcallsoftware/webspaces:latest
-    pull_policy: always
+    pull_policy: never
     ports:
       - "80:8080"
       - "443:8443"

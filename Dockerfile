@@ -5,12 +5,18 @@ FROM nginx:alpine
 
 ARG VITE_BACKEND_BASE_URL
 ARG VITE_TURNSTILE_SITE_KEY_PUBLIC
+ARG BUILD_VERSION=dev
 
 ENV NODE_ENV=production
 
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 COPY portfolio/ /usr/share/nginx/portfolio/
 COPY lastcallsoftware/ /usr/share/nginx/lastcallsoftware/
+
+# Add a deploy-specific version to asset URLs so browsers and CDNs fetch fresh
+# JS/CSS every release without requiring a manual cache purge.
+RUN find /usr/share/nginx/portfolio /usr/share/nginx/lastcallsoftware -type f -name "*.html" \
+    -exec sed -i "s|__APP_VERSION__|${BUILD_VERSION}|g" {} +
 
 # Inject backend URL and Turnstile key into portfolio contact form
 RUN sed -i "s|__BACKEND_BASE_URL__|${VITE_BACKEND_BASE_URL}|g" /usr/share/nginx/portfolio/index.html
