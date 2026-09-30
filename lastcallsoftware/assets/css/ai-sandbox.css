@@ -247,6 +247,15 @@
   margin-bottom: 0.55em;
 }
 
+.episode-card-meta {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-brass);
+  margin: 0 0 0.9em;
+}
+
 .episode-card-desc {
   color: rgba(255, 255, 255, 0.6);
   font-size: 0.95rem;

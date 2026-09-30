@@ -19,6 +19,35 @@
   // ==============================
   // Rendering
   // ==============================
+  function formatEpisodeDate(value) {
+    if (!value) return "";
+
+    var parsed = new Date(value);
+    if (!Number.isNaN(parsed.getTime())) {
+      return new Intl.DateTimeFormat("en-US", {
+        month: "long",
+        day: "numeric",
+        year: "numeric"
+      }).format(parsed);
+    }
+
+    return value;
+  }
+
+  function getEpisodeDateLabel(episode) {
+    if (episode.airedOn) {
+      return "Aired on " + formatEpisodeDate(episode.airedOn);
+    }
+    if (episode.scheduledFor) {
+      var scheduled = formatEpisodeDate(episode.scheduledFor);
+      if (scheduled && scheduled.toLowerCase() !== "coming soon") {
+        return "Scheduled for " + scheduled;
+      }
+      return "Coming soon";
+    }
+    return "Coming soon";
+  }
+
   function buildEpisodeCard(episode) {
     var card = document.createElement("article");
     card.className = "episode-card";
@@ -36,12 +65,17 @@
     title.className = "episode-card-title";
     title.textContent = episode.title;
 
+    var meta = document.createElement("p");
+    meta.className = "episode-card-meta";
+    meta.textContent = getEpisodeDateLabel(episode);
+
     var desc = document.createElement("p");
     desc.className = "episode-card-desc";
     desc.textContent = episode.description;
 
     body.appendChild(number);
     body.appendChild(title);
+    body.appendChild(meta);
     body.appendChild(desc);
 
     // ---- Media (video side) ----
