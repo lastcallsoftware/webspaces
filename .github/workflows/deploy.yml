@@ -63,6 +63,7 @@ jobs:
           build-args: |
             VITE_BACKEND_BASE_URL=${{ vars.BACKEND_BASE_URL }}
             VITE_TURNSTILE_SITE_KEY_PUBLIC=${{ vars.VITE_TURNSTILE_SITE_KEY_PUBLIC }}
+            BUILD_VERSION=${{ github.sha }}
           tags: lastcallsoftware/webspaces:latest,lastcallsoftware/webspaces:${{ github.sha }}
           cache-from: type=registry,ref=lastcallsoftware/webspaces:buildcache
           cache-to: type=registry,ref=lastcallsoftware/webspaces:buildcache,mode=max

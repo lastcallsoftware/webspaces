@@ -4,11 +4,6 @@ set -euo pipefail
 echo "=== Webspaces Deployment Script ==="
 echo "Deployment started at $(date)"
 
-BUILD_VERSION="${BUILD_VERSION:-$(git rev-parse --short HEAD 2>/dev/null || date -u +%Y%m%d%H%M%S)}"
-export BUILD_VERSION
-
-echo "Using build version: $BUILD_VERSION"
-
 if [ -z "${APP_SERVER_PASSWORD:-}" ]; then
   echo "✗ APP_SERVER_PASSWORD is not set"
   exit 1
@@ -20,9 +15,9 @@ if ! docker network inspect trackeats-net >/dev/null 2>&1; then
   exit 1
 fi
 
-# Build the webspaces image with a deploy-specific cache-busting version.
-echo "Building webspaces image with build version $BUILD_VERSION..."
-docker compose build --build-arg BUILD_VERSION="$BUILD_VERSION" nginx
+# Pull the webspaces and monitoring images.
+echo "Pulling latest webspaces image from Docker Hub..."
+docker compose pull
 
 # Bootstrap certificates on a fresh server. nginx needs a certificate to start,
 # while certbot needs nginx serving the ACME challenge, so start once with a
