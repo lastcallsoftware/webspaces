@@ -128,22 +128,21 @@
     resourcesBlock.appendChild(resourcesLabel);
     resourcesBlock.appendChild(resourcesList);
 
-    // YouTube link
-    var ytLink = document.createElement("a");
-    ytLink.className = "episode-yt-link";
-    ytLink.href = episode.youtubeUrl || "#";
-    ytLink.target = "_blank";
-    ytLink.rel = "noopener noreferrer";
-    ytLink.textContent = "Watch on YouTube";
-    if (!episode.youtubeUrl || episode.youtubeUrl === "#") {
-      ytLink.setAttribute("aria-disabled", "true");
-      ytLink.addEventListener("click", function (e) {
-        e.preventDefault();
-      });
-    }
-
     footer.appendChild(resourcesBlock);
-    footer.appendChild(ytLink);
+
+    var hasUpcomingSession = episode.scheduledFor &&
+      episode.scheduledFor.trim().toLowerCase() !== "coming soon" &&
+      !episode.airedOn;
+    if (hasUpcomingSession && episode.rsvpUrl && episode.rsvpUrl !== "#") {
+      var rsvpLink = document.createElement("a");
+      rsvpLink.className = "episode-rsvp-link";
+      rsvpLink.href = episode.rsvpUrl;
+      rsvpLink.target = "_blank";
+      rsvpLink.rel = "noopener noreferrer";
+      rsvpLink.textContent = "RSVP";
+      rsvpLink.setAttribute("aria-label", "RSVP for Episode " + episode.number);
+      footer.appendChild(rsvpLink);
+    }
 
     // Assemble
     card.appendChild(body);

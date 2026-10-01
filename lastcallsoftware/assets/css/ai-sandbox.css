@@ -391,7 +391,7 @@
   border-color: rgba(255, 255, 255, 0.15);
 }
 
-.episode-yt-link {
+.episode-rsvp-link {
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -407,18 +407,18 @@
   align-self: center;
 }
 
-.episode-yt-link::after {
+.episode-rsvp-link::after {
   content: "→";
   transition: transform 0.2s ease;
 }
 
-.episode-yt-link:hover {
+.episode-rsvp-link:hover {
   background: rgba(195, 154, 92, 0.1);
   color: var(--color-brass);
   border-color: rgba(195, 154, 92, 0.5);
 }
 
-.episode-yt-link:hover::after {
+.episode-rsvp-link:hover::after {
   transform: translateX(3px);
 }
 
