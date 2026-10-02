@@ -47,6 +47,7 @@
   var loadingEl = form.querySelector(".loading");
   var errorEl = form.querySelector(".error-message");
   var sentEl = form.querySelector(".sent-message");
+  var submitButton = form.querySelector('button[type="submit"]');
   var backendBase = (document.querySelector('meta[name="backend-base-url"]') || {}).content || "";
 
   function showStatus(el) {
@@ -56,25 +57,55 @@
     if (el) el.style.display = "block";
   }
 
-  form.addEventListener("submit", function (e) {
+  form.addEventListener("submit", async function (e) {
     e.preventDefault();
-    showStatus(loadingEl);
+    if (submitButton.disabled) return;
 
     var data = new FormData(form);
-    var payload = Object.fromEntries(data.entries());
+    var payload = {
+      name: String(data.get("name") || "").trim(),
+      email: String(data.get("email") || "").trim(),
+      subject: String(data.get("subject") || "").trim(),
+      message: String(data.get("message") || "").trim(),
+      turnstileToken: String(data.get("cf-turnstile-response") || "").trim()
+    };
 
-    fetch(backendBase + "/contact", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
-    })
-      .then(function (res) {
-        if (!res.ok) throw new Error("Request failed");
-        showStatus(sentEl);
-        form.reset();
-      })
-      .catch(function () {
-        showStatus(errorEl);
+    if (!payload.turnstileToken) {
+      errorEl.textContent = "Please complete the Turnstile challenge.";
+      showStatus(errorEl);
+      return;
+    }
+
+    showStatus(loadingEl);
+    submitButton.disabled = true;
+
+    try {
+      if (!backendBase || backendBase.includes("__BACKEND_BASE_URL__")) {
+        throw new Error("Contact form is not configured. Please try again later.");
+      }
+      var res = await fetch(backendBase.replace(/\/+$/, "") + "/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
       });
+      if (!res.ok) {
+        var backendMessage = "";
+        try {
+          var response = await res.json();
+          if (response && typeof response.msg === "string") backendMessage = response.msg;
+        } catch (_) {
+          backendMessage = "";
+        }
+        throw new Error(backendMessage || "Unable to send your message (status " + res.status + "). Please try again.");
+      }
+      form.reset();
+      showStatus(sentEl);
+    } catch (error) {
+      errorEl.textContent = error instanceof Error ? error.message : "Unable to send your message. Please try again.";
+      showStatus(errorEl);
+    } finally {
+      submitButton.disabled = false;
+      if (window.turnstile) window.turnstile.reset();
+    }
   });
 })();
