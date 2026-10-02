@@ -78,7 +78,7 @@
     body.appendChild(meta);
     body.appendChild(desc);
 
-    // ---- Media (video side) ----
+    // ---- Media (recording, upcoming image, or placeholder) ----
     var media = document.createElement("div");
     media.className = "episode-card-media";
     media.setAttribute("data-youtube-id", episode.youtubeId || "");
@@ -91,7 +91,20 @@
       '<path d="M10 9.5l5 2.5-5 2.5z" fill="currentColor"></path>' +
       "</svg>" +
       '<span class="episode-video-placeholder-text">Recording coming soon</span>';
-    media.appendChild(placeholder);
+    if (!episode.youtubeId && episode.imageUrl) {
+      var image = document.createElement("img");
+      image.className = "episode-card-image";
+      image.alt = episode.imageAlt || episode.title;
+      image.loading = "lazy";
+      image.addEventListener("error", function () {
+        image.remove();
+        media.appendChild(placeholder);
+      }, { once: true });
+      image.src = episode.imageUrl;
+      media.appendChild(image);
+    } else {
+      media.appendChild(placeholder);
+    }
 
     // ---- Footer ----
     var footer = document.createElement("div");
