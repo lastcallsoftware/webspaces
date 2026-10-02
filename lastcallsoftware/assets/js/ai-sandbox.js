@@ -137,9 +137,15 @@
       var rsvpLink = document.createElement("a");
       rsvpLink.className = "episode-rsvp-link";
       rsvpLink.href = episode.rsvpUrl;
-      rsvpLink.target = "_blank";
-      rsvpLink.rel = "noopener noreferrer";
-      rsvpLink.textContent = "RSVP";
+      if (episode.lumaEventId) {
+        rsvpLink.classList.add("luma-checkout--button");
+        rsvpLink.setAttribute("data-luma-action", "checkout");
+        rsvpLink.setAttribute("data-luma-event-id", episode.lumaEventId);
+      } else {
+        rsvpLink.target = "_blank";
+        rsvpLink.rel = "noopener noreferrer";
+      }
+      rsvpLink.textContent = "Register for Event";
       rsvpLink.setAttribute("aria-label", "RSVP for Episode " + episode.number);
       footer.appendChild(rsvpLink);
     }
