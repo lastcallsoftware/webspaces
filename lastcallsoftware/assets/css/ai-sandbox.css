@@ -100,10 +100,15 @@
 
 /* ---- Episode Jump Nav ---- */
 .episode-jump {
+  position: sticky;
+  top: var(--header-h);
+  z-index: 90;
   display: flex;
   align-items: center;
   gap: 18px;
-  flex-wrap: wrap;
+  height: 70px;
+  background: var(--color-bg);
+  box-shadow: 0 2px 0 rgba(22, 35, 46, 0.07);
   margin-bottom: 3em;
 }
 
@@ -119,11 +124,17 @@
 .episode-jump-list {
   list-style: none;
   margin: 0;
-  padding: 0;
+  padding: 4px;
   display: flex;
   gap: 6px;
-  flex-wrap: wrap;
+  min-width: 0;
+  overflow-x: auto;
 }
+
+.episode-jump-list li { flex-shrink: 0; }
+
+/* Keep episode jump targets below the sticky controls and site header. */
+.episode-card { scroll-margin-top: 86px; }
 
 .episode-jump-list a {
   display: inline-flex;
