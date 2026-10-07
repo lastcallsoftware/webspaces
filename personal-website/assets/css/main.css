@@ -304,6 +304,12 @@ body.trackeats-mobile-lightbox-open .glightbox-container .gslide-image img {
   transition: color 0.25s ease, transform 0.25s ease;
 }
 
+.navmenu a svg.navicon {
+  width: 1em;
+  height: 1em;
+  flex-shrink: 0;
+}
+
 .navmenu a .toggle-dropdown,
 .navmenu a:focus .toggle-dropdown {
   font-size: 12px;
@@ -1188,4 +1194,3 @@ body.trackeats-mobile-lightbox-open .glightbox-container .gslide-desc {
   padding: 0;
   color: color-mix(in srgb, var(--default-color), transparent 30%);
 }
-
