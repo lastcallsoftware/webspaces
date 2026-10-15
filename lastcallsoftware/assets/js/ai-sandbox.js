@@ -182,22 +182,9 @@
   }
 
   // ==============================
-  // Infinite scroll
+  // Episode feed
   // ==============================
-  var currentIndex = 0;
-  var scrollObserver = null;
-
-  function loadNext() {
-    if (currentIndex >= episodes.length) {
-      if (statusEl) {
-        statusEl.classList.add("done");
-        if (statusTextEl) statusTextEl.textContent = "";
-      }
-      if (scrollObserver) scrollObserver.disconnect();
-      return;
-    }
-
-    var episode = episodes[currentIndex];
+  function renderEpisode(episode) {
     var card = buildEpisodeCard(episode);
     feedEl.appendChild(card);
 
@@ -210,42 +197,6 @@
 
     // Lazy-load the YouTube embed when the card scrolls near the viewport
     lazyLoadVideo(card.querySelector(".episode-card-media"));
-
-    currentIndex++;
-
-    // If the sentinel is still in view after appending, keep loading
-    // (the IntersectionObserver only fires on state transitions, so we
-    // need to manually check when the sentinel stays visible).
-    if (statusEl && isInViewport(statusEl)) {
-      loadNext();
-    }
-  }
-
-  function isInViewport(el) {
-    var rect = el.getBoundingClientRect();
-    var rootMargin = 600; // matches the observer's rootMargin
-    return rect.top <= (window.innerHeight || document.documentElement.clientHeight) + rootMargin &&
-           rect.bottom >= -rootMargin;
-  }
-
-  // ==============================
-  // Scroll sentinel observation
-  // ==============================
-  if ("IntersectionObserver" in window && statusEl) {
-    scrollObserver = new IntersectionObserver(
-      function (entries) {
-        entries.forEach(function (entry) {
-          if (entry.isIntersecting) {
-            loadNext();
-          }
-        });
-      },
-      { rootMargin: "600px 0px" }
-    );
-    scrollObserver.observe(statusEl);
-  } else {
-    // Fallback: load all immediately
-    while (currentIndex < episodes.length) loadNext();
   }
 
   // ==============================
@@ -305,6 +256,10 @@
 
   buildJumpNav();
 
-  // Load the first episode immediately to avoid a blank above the sentinel
-  loadNext();
+  // Render every episode immediately so all jump links have a target.
+  episodes.forEach(renderEpisode);
+  if (statusEl) {
+    statusEl.classList.add("done");
+    if (statusTextEl) statusTextEl.textContent = "";
+  }
 })();
