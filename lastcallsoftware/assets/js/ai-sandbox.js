@@ -48,6 +48,29 @@
     return "Coming soon";
   }
 
+  function renderNextEpisode() {
+    var section = document.getElementById("next-episode");
+    var episode = episodes.find(function (item) { return !item.airedOn; });
+    if (!section || !episode) return;
+
+    section.querySelector("#next-episode-number").textContent = "Episode " + episode.number;
+    section.querySelector("#next-episode-title").textContent = episode.title;
+    section.querySelector("#next-episode-date").textContent = getEpisodeDateLabel(episode);
+    section.querySelector("#next-episode-link").href = "#" + episode.id;
+
+    if (episode.imageUrl) {
+      var thumbnail = section.querySelector("#next-episode-thumbnail");
+      thumbnail.alt = episode.imageAlt || episode.title;
+      thumbnail.addEventListener("error", function () {
+        thumbnail.hidden = true;
+      }, { once: true });
+      thumbnail.src = episode.imageUrl;
+      thumbnail.hidden = false;
+    }
+
+    section.hidden = false;
+  }
+
   function buildEpisodeCard(episode) {
     var card = document.createElement("article");
     card.className = "episode-card";
@@ -110,18 +133,18 @@
     var footer = document.createElement("div");
     footer.className = "episode-card-footer";
 
-    // Resources block
-    var resourcesBlock = document.createElement("div");
-    resourcesBlock.className = "episode-resources";
-
-    var resourcesLabel = document.createElement("p");
-    resourcesLabel.className = "episode-resources-label";
-    resourcesLabel.textContent = "Resources";
-
-    var resourcesList = document.createElement("ul");
-    resourcesList.className = "episode-resources-list";
-
+    // Resources block (only when resources are listed)
     if (episode.resources && episode.resources.length) {
+      var resourcesBlock = document.createElement("div");
+      resourcesBlock.className = "episode-resources";
+
+      var resourcesLabel = document.createElement("p");
+      resourcesLabel.className = "episode-resources-label";
+      resourcesLabel.textContent = "Resources";
+
+      var resourcesList = document.createElement("ul");
+      resourcesList.className = "episode-resources-list";
+
       episode.resources.forEach(function (res) {
         var li = document.createElement("li");
         var link = document.createElement("a");
@@ -136,12 +159,11 @@
         li.appendChild(link);
         resourcesList.appendChild(li);
       });
+      resourcesBlock.appendChild(resourcesLabel);
+      resourcesBlock.appendChild(resourcesList);
+
+      footer.appendChild(resourcesBlock);
     }
-
-    resourcesBlock.appendChild(resourcesLabel);
-    resourcesBlock.appendChild(resourcesList);
-
-    footer.appendChild(resourcesBlock);
 
     var hasUpcomingSession = episode.scheduledFor &&
       episode.scheduledFor.trim().toLowerCase() !== "coming soon" &&
@@ -258,6 +280,7 @@
 
   // Render every episode immediately so all jump links have a target.
   episodes.forEach(renderEpisode);
+  renderNextEpisode();
   if (statusEl) {
     statusEl.classList.add("done");
     if (statusTextEl) statusTextEl.textContent = "";

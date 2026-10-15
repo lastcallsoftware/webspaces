@@ -65,11 +65,28 @@
     </div>
   </section>
 
+  <!-- Next episode: populated from the first unaired episode by ai-sandbox.js. -->
+  <section class="section next-episode-section" id="next-episode" aria-labelledby="next-episode-heading" hidden>
+    <div class="section-inner">
+      <h2 class="section-title" id="next-episode-heading">Next episode</h2>
+      <div class="next-episode-preview">
+        <div class="next-episode-summary">
+          <img class="next-episode-thumbnail" id="next-episode-thumbnail" alt="" width="160" height="90" loading="lazy" hidden>
+          <div class="next-episode-copy">
+            <p class="eyebrow" id="next-episode-number"></p>
+            <h3 class="next-episode-title" id="next-episode-title"></h3>
+            <p class="next-episode-meta" id="next-episode-date"></p>
+          </div>
+        </div>
+        <a class="btn btn-primary" id="next-episode-link">View episode details</a>
+      </div>
+    </div>
+  </section>
+
   <!-- Episode feed -->
   <section class="section episode-feed-section" id="episodes">
     <div class="section-inner">
       <h2 class="section-title">Episodes</h2>
-      <p class="feed-lede">Scroll to browse the archive. New sessions appear here as they air.</p>
 
       <!-- Episode nav shortcuts -->
       <nav class="episode-jump" id="episode-jump" aria-label="Jump to an episode">
@@ -162,7 +179,8 @@
       youtubeId: "",
       imageUrl: "assets/img/episode-03-thumbnail.png",
       imageAlt: "A vending machine with useful AI applications on the first row and useless AI applications on the second row",
-      scheduledFor: "Coming soon",
+      scheduledFor: "Saturday, Oct 24, 2:00 PM ET",
+      rsvpUrl: "https://luma.com/uvdbo7vn",
       resources: [
       ]
     },

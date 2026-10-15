@@ -98,6 +98,60 @@
   border-radius: 999px;
 }
 
+/* ---- Next Episode ---- */
+.next-episode-section {
+  padding: 48px 24px;
+  background: var(--color-bg-alt);
+  border-top: 3px solid var(--color-brass);
+}
+
+.next-episode-preview {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 32px;
+  align-items: center;
+}
+
+.next-episode-summary {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  min-width: 0;
+}
+
+.next-episode-thumbnail {
+  width: 160px;
+  height: 90px;
+  flex-shrink: 0;
+  object-fit: contain;
+  border-radius: 8px;
+  background: var(--color-ink);
+  outline: 1px solid rgba(22, 35, 46, 0.1);
+  outline-offset: -1px;
+}
+
+.next-episode-copy { min-width: 0; }
+.next-episode-copy .eyebrow { margin-bottom: 0.6em; }
+
+.next-episode-title {
+  max-width: 720px;
+  font-size: clamp(1.5rem, 2.8vw, 2rem);
+  line-height: 1.2;
+  text-wrap: balance;
+}
+
+.next-episode-meta {
+  margin: 1em 0 0;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--color-ink);
+}
+
+.next-episode-preview .btn {
+  min-height: 44px;
+  justify-self: start;
+}
+
 /* ---- Episode Jump Nav ---- */
 .episode-jump {
   position: sticky;
@@ -414,6 +468,7 @@
 .episode-rsvp-link {
   display: inline-flex;
   align-items: center;
+  margin-left: auto;
   gap: 8px;
   font-family: var(--font-mono);
   font-size: 0.78rem;
@@ -477,6 +532,20 @@
 
 /* ---- Responsive ---- */
 @media (max-width: 860px) {
+  .next-episode-section { padding: 40px 20px; }
+
+  .next-episode-preview {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .next-episode-summary { gap: 16px; }
+
+  .next-episode-thumbnail {
+    width: 96px;
+    height: 54px;
+  }
+
   .episode-card {
     grid-template-columns: 1fr !important;
     direction: ltr !important;
