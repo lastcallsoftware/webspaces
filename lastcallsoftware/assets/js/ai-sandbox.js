@@ -94,7 +94,7 @@
 
     var desc = document.createElement("p");
     desc.className = "episode-card-desc";
-    desc.textContent = episode.description;
+    desc.innerHTML = episode.description;
 
     body.appendChild(number);
     body.appendChild(title);
