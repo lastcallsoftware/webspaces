@@ -331,7 +331,7 @@
 /* ---- Card Media (recording or upcoming image) ---- */
 .episode-card-media {
   position: relative;
-  background: #111D26;
+  background: #000;
   min-height: 280px;
   display: flex;
   align-items: center;
@@ -355,11 +355,12 @@
   z-index: 2;
 }
 
+/* Center the player at 16:9 so taller cards leave space above and below. */
 .episode-card-media iframe {
-  position: absolute;
-  inset: 0;
+  position: relative;
   width: 100%;
-  height: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
   border: 0;
   z-index: 1;
 }
@@ -547,7 +548,7 @@
   }
 
   .episode-card {
-    grid-template-columns: 1fr !important;
+    grid-template-columns: minmax(0, 1fr) !important;
     direction: ltr !important;
   }
 
