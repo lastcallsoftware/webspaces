@@ -105,7 +105,7 @@
                 </p>
                 <br/>
             </div>
-                
+
             <div class="container" data-aos="fade-up" data-aos-delay="100">
                 <div class="row gy-4 justify-content-center">
                     <div class="col-lg-4">
@@ -113,20 +113,18 @@
                     </div>
                     <div class="col-lg-8 content">
                         <h2>Why You Need Me</h2>
-                        <p>AI has revolutionized the software development landscape, and will continue 
-                            to do so for the forserable future.  Like many other tools of past eras, 
-                            it has enabled one person to do the work of many.
+                        <p>AI has revolutionized the software development landscape, and its impact will
+                            only continue to grow.  Like many other tools of past eras, it has enabled
+                            one person to do the work of many.
                         </p>
-                        <p>But also like any tool, you still need someone to wield it.  You can't simply 
-                            tell an AI to create an app for you and expect it to build anything remotely 
-                            usable.  Anyone who claims otherwise is trying to sell something.  The stories
-                            I could tell about some of the ways even top-tier AIs have responded to fairly
-                            straightforward prompts would make for some pretty good comedy.
+                        <p>But also like any tool, you still need someone to wield it.  You <b>could</b>
+                            simply tell an AI to create an app for you -- if you don't mind it being
+                            a buggy, insecure, unmaintainable mess.
                         </p>
                         <p>More than ever, you need someone with experience and insight at the helm to guide
-                            AI-driven development, spot its mistakes, and keep it on course -- especially 
-                            considering how completely confident AIs are in even their most outlandish 
-                            hallucinations.  <b>You need someone like me.</b>
+                            AI-driven development, spot its mistakes, and keep it on course -- someone who
+                            can make the difference between a professional-level product and AI slop.
+                            <b>You need someone like me.</b>
                         </p>
                     </div>
                 </div>
@@ -318,7 +316,7 @@
                                     TrackEats is a full-stack web application that allows users to accurately track the 
                                     nutritional content of their diet.
                                     <ul>
-                                        <li>Deployed in Docker containers on an AWS EC2 instance using GitHub Actions/Docker Compose for CI/CD</li>
+                                        <li>Deployed in Docker containers on a DigitalOcean Droplet instance using GitHub Actions/Docker Compose for CI/CD</li>
                                         <li>Front end is built with TypeScript, React, Tanstack Table and Axios</li>
                                         <li>Back end is built with Python, Flask, and SQLAlchemy</li>
                                         <li>Database is MySQL</li>
@@ -387,12 +385,12 @@
                                 <p>
                                     CrossCracker uses AI to solve crossword puzzles.<br>
                                     <ul>
-                                        <li>The latest version can solve a New York Times puzzle 
-                                            with no errors (watch the video!).</li>
-                                        <li>Back end is Python, front end is HTML/JavaScript/CSS, connected by FastAPI-hosted REST and 
+                                        <li>Can solve a New York Times crossword puzzle with no errors (watch the video!).</li>
+                                        <li>Front end is HTML/JavaScript/CSS, back end is Python, connected by FastAPI-hosted REST and 
                                             websocket APIs.</li>
                                         <li>Uses an LLM for candidate answer generation, evaluation, and validation.</li>
-                                        <li>Capable of using any Ollama-hosted LLM locally, or any Anthropic LLM over the Internet.</li>
+                                        <li>Capable of using any Ollama-hosted LLM locally, or any Anthropic, OpenAI, or OpenRouter LLM 
+                                            over the Internet.</li>
                                         <li>Uses a ChromaDB database of crossword hints for Retrieval-Augmented Generation (RAG),
                                             substantially improving solution accuracy.</li>
                                     </ul>
@@ -401,27 +399,30 @@
                                     </button>
                                     <div class="collapse mt-2" id="crosscrackerMoreInfo">
                                         <ul>
-                                            <li>When running a local LLM, I prefer the <b>Llama 3.1 (8b)</b> model.  It provides the best compromise
-                                                between size, speed, and effectiveness.  And it's free!</li>
-                                            <li>When using one of the big LLMs available over the Internet, <b>Claude Opus 4.6</b> is the current 
-                                                state of the art.  It is MUCH more effective than anything I could ever run locally -- but it
-                                                isn't free.  Each puzzle solution costs $0.50-1.00 in token usage, so... best saved for demo
-                                                videos and special occasions.</li>
+                                            <li>When running an LLM locally, I prefer the <b>Llama 3.1 (8b)</b> model.  It isn't great, but it's
+                                                about the best thing you can run on a consumer-grade PC.  And it's free!</li>
+                                            <li>When using one of the cloud-based commercial LLMs, <b>Claude Opus</b> offers the best balance 
+                                                of speed, performance, and price.  It is MUCH more effective than anything I could ever run 
+                                                locally -- but it isn't free, which is why CrossCracker isn't available online.</li>
                                             <li>CrossCracker 2.0 is vastly more capable than version 1.0.  Partly that's due to much-improved 
                                                 program logic, and partly due to the use of a <b>ChromaDB "hint" database</b>.  Retrieval-Augmented
-                                                Geneation (RAG) using vector databases is the new normal for AI apps, and for good reason.
+                                                Geneation (RAG) using vector databases is now typical for AI apps, and for good reason.
+                                                It allows an LLM to access a large body of specialized information rather than relying solely on 
+                                                its own training data, which is often incomplete or out of date.
+                                            <li>The algorithm and heuristics for selecting which answer to place, and more importantly which 
+                                                one to backtrack when stuck, was actually far more difficult than integrating the AI.
+                                                The technical term for it is a <b>constraint satisfaction problem (CSP) with backtracking and 
+                                                constraint propagation</b>.</li>
                                             <li>Puzzle aficionados will know that the New York Times crossword is the gold standard, and that
-                                                it is easiest on Monday and gets harder throughout the week.  With the Llama LLM, 
-                                                CrossCracker 2 can reliably solve a Monday NYT puzzle.  With Opus it can <b>reliably solve a
-                                                Tuesday NYT puzzle</b> and could probably solve even a Sunday puzzle if it only had to answer 
-                                                clues, but after Tuesday the NYT puzzles generally have all kinds of gimmicks like rebuses and
-                                                themes and self-referential clues that my solver is not equipped to handle.  Maybe some day.</li>
-                                            <li>The algorithm and heuristics for selecting which answer to place, and more importantly, which 
-                                                one to backtrack when stuck, was actually <b>far more difficult than integrating the AI</b>.
-                                                I'm confident that no AI in the world could generate the code that I designed and wrote for this
-                                                solver.  At least, not yet.  Claude Opus sure couldn't -- when asked to try, it produced 
-                                                a lot of unmaintainable, bug-ridden spaghetti code.  So yes, <b>there's still a place in software
-                                                engineering for us puny humans</b>.</li>
+                                                it is easiest on Monday and gets harder throughout the week.  With the Llama LLM, CrossCracker 2 
+                                                can generally solve a Monday NYT puzzle.  With a cloud-based LLM it can <b>reliably solve a
+                                                Tuesday NYT puzzle</b> and could probably solve even a Sunday puzzle if all it had to do was answer 
+                                                the clues, but after Tuesday the NYT puzzles generally have all kinds of gimmicks like rebuses and
+                                                themes and self-referential clues that my solver is not equipped to handle.  Maybe some day!</li>
+                                            <li>I'm confident that not even the best AIs could generate the code that I designed and wrote for
+                                                this solver.  At least, not yet.  I  know because I tried, and Claude produced a mess of 
+                                                unmaintainable, bug-ridden spaghetti code.  This is a great illustration of why <b>human 
+                                                creativity and problem-solving skills still remain invaluable in software engineering</b>.</li>
                                             </li>
                                         </ul>
                                     </div>
@@ -477,6 +478,7 @@
                             <div class="pt-3 px-3 pb-2">
                                 <p>PatternLab is an interactive learning experiment that lets you watch a neural network learn to recognize patterns.</p>
                                 <ul>
+                                    <li>I whipped this up in a couple of days to demonstrate how neural networks work for my <a href="https://www.lastcallsoftware.com/ai-sandbox.html">AI Sandbox podcast</a></li>
                                     <li>Create patterns on a 4-by-4 grid and see if it predicts the correct label for them</li>
                                     <li>Examine individual neurons and their effects on the network's predictions</li>
                                     <li>Train the network with thousands of examples and watch how it responds</li>
